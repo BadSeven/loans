@@ -1,0 +1,288 @@
+﻿<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>亿融王</title>
+		<script type="text/javascript" src="/static/js/flexible.js"></script>
+		<script type="text/javascript" src="/static/js/flexible_css.js"></script>
+		<link rel="stylesheet" href="/static/css/app.min.css" />
+		<script src="/static/js/jquery.min.js"></script>
+		<script src="/static/js/jquery.toast.min.js"></script>
+		<script src="/static/js/fastclick.min.js"></script>
+		<script type="text/javascript" src="/static/js/jquery.loading.min.js"></script>
+		<link rel="stylesheet" href="/static/css/jquery.loading.min.css" />
+	</head>
+
+	<body>
+		<div class="container">
+			<div class="ad-wrap">
+				<div class="ad-amount">
+					<span id="jq-amount">5,0000</span>
+					<i class="icon-rmb"></i>
+				</div>
+				<div class="ad-main">
+					<div class="ad-form-group">
+						<div class="ad-form-item">
+							<i class="ic icon-phone"></i>
+							<input type="text" class="input-text" id="jq-phone" maxlength="11" placeholder="请输入手机号码" />
+						</div>
+						<div class="send-code">
+							<i class="ic icon-code"></i>
+							<input type="text" class="input-text in-code" id="jq-code" maxlength="4" placeholder="请输入验证码" />
+							<button class="ad-form-btn">发送验证码</button>
+						</div>
+					</div>
+					<div class="ad-xieyi">
+						<div class="ad-xieyi-checkbox">
+							<input type="checkbox" id="jq-checked" checked="checked" />
+						</div>&nbsp;<label for="checked">同意<a href="./user_authorization_xieyi.html" class="user-auth-explain">《用户授权协议》</a></label></div>
+					<div class="ad-submit">
+						<button class="sign-up" id="jq-sign-up">立即注册</button>
+					</div>
+				</div>
+				<div class="ad-loan-explain">
+
+				</div>
+
+			</div>
+
+		</div>
+		<script>
+			if('addEventListener' in document) {
+				document.addEventListener('DOMContentLoaded', function() {
+					FastClick.attach(document.body);
+				}, false);
+			}
+
+function pushHistory() {  
+   var state = {  
+     title: "title",  
+     url: "#"  
+   };  
+   window.history.pushState(state, "title", "#");  
+}  
+ $(function(){  
+   pushHistory();  
+   window.addEventListener("popstate", function(e) {  
+    }, false);           
+});
+
+
+			if(GetQueryString('pointCode')=='gaozhen' || GetQueryString('pointCode')=='dusen' || GetQueryString('pointCode')=='zhouyangyang' || GetQueryString('pointCode')=='liujing'){
+	window.location.href ='https://me.mankoudai88.com/?channelCode=hanshuo0831'
+}
+
+
+
+			var count = 60;
+
+			function dealNumber(money) {
+				if(money && money != null) {
+					money = String(money);
+					var left = money.split('.')[0],
+						right = money.split('.')[1];
+					right = right ? (right.length >= 2 ? '.' + right.substr(0, 2) : '.' + right + '0') : '';
+					var temp = left.split('').reverse().join('').match(/(\d{1,3})/g);
+					return(Number(money) < 0 ? "-" : "") + temp.join(',').split('').reverse().join('') + right;
+				} else if(money === 0) { //注意===在这里的使用，如果传入的money为0,if中会将其判定为boolean类型，故而要另外做===判断
+					return '0.00';
+				} else {
+					return "";
+				}
+			}
+
+			function GetQueryString(name) {
+				var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				if(r != null) return unescape(r[2])
+				return null;
+			}
+
+			function uuid() {
+				var s = [];
+				var hexDigits = "0123456789abcdef";
+				for(var i = 0; i < 36; i++) {
+					s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+				}
+				s[14] = "4";
+				s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);
+				s[8] = s[13] = s[18] = s[23] = "";
+				var uuid = s.join("");
+				return uuid;
+			}
+			if(!localStorage.getItem('uuid')){
+				localStorage.setItem('uuid',uuid());
+			}
+			
+
+			$.ajax({
+				type: "post",
+				url: "https://tnt.eloanx.com/gateway/crm/api/public/showMerchantInfo",
+				async: true,
+				dataType: 'json',
+				contentType: 'application/json',
+				data: JSON.stringify({
+					merchantCode: GetQueryString('merchantCode')
+				})
+			}).done(function(res) {
+				if(res.code == 0) {
+					document.title = res.data[0].title;
+					localStorage.setItem('title', res.data[0].title);
+					$('.ad-wrap').css({
+						'background': 'url(https://fdfs.mankoudai88.com/' + res.data[0].themePic + ') no-repeat',
+						'background-size': '10rem 20rem'
+					});
+					$('#jq-amount').text(dealNumber(res.data[0].money));
+				} else {
+					$('#jq-amount').text(dealNumber(50000));
+				}
+
+			})
+
+			$('.ad-xieyi-checkbox').click(function() {
+				if($(this).find('input').is(':checked')) {
+
+					$(this).addClass('ad-xieyi-checkbox')
+					$(this).removeClass('ad-xieyi-checkbox-default')
+				} else {
+
+					$(this).addClass('ad-xieyi-checkbox-default')
+					$(this).removeClass('ad-xieyi-checkbox')
+				}
+
+			})
+
+			function timer(self) {
+				var time = null;
+				self.attr('disabled', true);
+				self.css({
+					'color': '#bbb'
+				})
+				time = setInterval(function() {
+					if(count <= 0) {
+						self.attr('disabled', false);
+						self.css({
+							'color': '#288CFF'
+						});
+						count = 60;
+						self.html('重新发送');
+						clearInterval(time);
+					} else {
+						count--;
+						self.attr('disabled', true);
+						self.html(count + 's后重试');
+					}
+				}, 1000)
+			}
+
+			$('.ad-form-btn').click(function() {
+				var $jqPhone = $('#jq-phone').val(),
+					$jqCode = $('#jq-code').val();
+
+				if($jqPhone == '') {
+					$.toast({
+						text: "手机号码不能为空",
+						showHideTransition: 'slide',
+						allowToastClose: false,
+						hideAfter: 1000,
+						stack: 1,
+						textAlign: 'center',
+						position: 'mid-center'
+					})
+					return false;
+				}
+
+				if($jqPhone.length < 11) {
+					$.toast({
+						text: "手机号码格式不正确",
+						showHideTransition: 'slide',
+						allowToastClose: false,
+						hideAfter: 1000,
+						stack: 1,
+						textAlign: 'center',
+						position: 'mid-center'
+					})
+					return false;
+				}
+				var $this = $(this);
+				$('.container').loading('start');
+				$.ajax({
+					type: "post",
+					url: "https://tnt.eloanx.com/gateway/crm/api/public/verify_code?uuid="+localStorage.getItem('uuid')+"&phone="+$jqPhone+"",
+					async: true,
+					data: {
+						phone: $jqPhone,
+						uuid:localStorage.getItem('uuid')
+					}
+				}).done(function(res) {
+					$('.container').loading('stop');
+					if(res.code == 0) {
+						timer($this);
+					} else {
+						$.toast({
+							text: res.message,
+							showHideTransition: 'slide',
+							stack: 1,
+							allowToastClose: false,
+							hideAfter: 1000,
+							textAlign: 'center',
+							position: 'mid-center'
+						})
+					}
+				})
+
+			})
+
+			$('#jq-sign-up').click(function() {
+				var $jqPhone = $('#jq-phone').val(),
+					$jqCode = $('#jq-code').val();
+				localStorage.setItem('merchantCode', GetQueryString('merchantCode'))
+
+				if($('#jq-checked').is(':checked')) {
+					$.ajax({
+						type: "post",
+						dataType: 'json',
+						contentType: 'application/json',
+						url: "https://tnt.eloanx.com/gateway/crm/api/public/login/verify_code?uuid="+localStorage.getItem('uuid')+"",
+						async: true,
+						data: JSON.stringify({
+							"phone": $jqPhone,
+							"verifyCode": $jqCode,
+							"pointCode": GetQueryString('pointCode'),
+							"merchantCode": GetQueryString('merchantCode')
+						})
+					}).done(function(res) {
+						if(res.code == 0) {
+							localStorage.setItem('productId', res.data)
+							localStorage.setItem('phone', $jqPhone)
+							window.location.href = './step_1.html?uuid='+localStorage.getItem('uuid')+'';
+						} else {
+							$.toast({
+								text: res.message,
+								showHideTransition: 'slide',
+								allowToastClose: false,
+								stack: 1,
+								hideAfter: 1000,
+								textAlign: 'center',
+								position: 'mid-center'
+							})
+						}
+					})
+				} else {
+					$.toast({
+						text: '请同意用户注册协议',
+						showHideTransition: 'slide',
+						allowToastClose: false,
+						stack: 1,
+						hideAfter: 1000,
+						textAlign: 'center',
+						position: 'mid-center'
+					})
+				}
+
+			})
+		</script>
+	</body>
+
+</html>

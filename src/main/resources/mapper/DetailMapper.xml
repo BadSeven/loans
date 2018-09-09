@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.loans.dao.DetailMapper" >
+  <resultMap id="BaseResultMap" type="com.loans.pojo.Detail" >
+    <id column="id" property="id" jdbcType="CHAR" />
+    <result column="channelId" property="channelid" jdbcType="CHAR" />
+    <result column="customerId" property="customerid" jdbcType="CHAR" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, channelId, customerId, createTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from detail
+    where id = #{id,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from detail
+    where id = #{id,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.loans.pojo.Detail" >
+    insert into detail (id, channelId, customerId, 
+      createTime)
+    values (#{id,jdbcType=CHAR}, #{channelid,jdbcType=CHAR}, #{customerid,jdbcType=CHAR}, 
+      #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.loans.pojo.Detail" >
+    insert into detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="channelid != null" >
+        channelId,
+      </if>
+      <if test="customerid != null" >
+        customerId,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=CHAR},
+      </if>
+      <if test="channelid != null" >
+        #{channelid,jdbcType=CHAR},
+      </if>
+      <if test="customerid != null" >
+        #{customerid,jdbcType=CHAR},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.loans.pojo.Detail" >
+    update detail
+    <set >
+      <if test="channelid != null" >
+        channelId = #{channelid,jdbcType=CHAR},
+      </if>
+      <if test="customerid != null" >
+        customerId = #{customerid,jdbcType=CHAR},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.loans.pojo.Detail" >
+    update detail
+    set channelId = #{channelid,jdbcType=CHAR},
+      customerId = #{customerid,jdbcType=CHAR},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=CHAR}
+  </update>
+</mapper>

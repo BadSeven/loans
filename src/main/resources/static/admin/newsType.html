@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<link rel="stylesheet" href="res/css/amazeui.min.css" />
+	<link rel="stylesheet" href="res/css/admin.css" />
+	<script src="res/layui/layui.js"></script>
+	<script src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/newsType.js"></script>
+</head>
+
+<body>
+<div class="admin-content-body">
+	<div class="am-cf am-padding am-padding-bottom-0">
+		<div class="am-fl am-cf"><strong class="am-text-primary am-text-lg">图片管理</strong><small></small></div>
+	</div>
+
+	<hr>
+
+	<div class="am-g">
+		<div class="am-u-sm-12 am-u-md-6">
+			<div class="am-btn-toolbar">
+				<div class="am-btn-group am-btn-group-xs">
+					<a href="/editImage"><button type="button" class="am-btn am-btn-default"><span class="am-icon-plus"></span> 新增</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="am-g">
+		<div class="am-u-sm-12">
+			<form class="am-form">
+				<table class="am-table am-table-striped am-table-hover table-main">
+					<thead>
+					<tr>
+						<th class="table-id">ID</th>
+						<th class="table-title">图片类别</th>
+						<th class="table-title">图片名称</th>
+						<th class="table-set">操作</th>
+					</tr>
+					</thead>
+					<tbody id="imagelist">
+
+					</tbody>
+				</table>
+				<div class="am-cf" id="totle" >
+
+				</div>
+				<hr>
+			</form>
+		</div>
+
+	</div>
+</div>
+
+
+</body>
+
+</html>
